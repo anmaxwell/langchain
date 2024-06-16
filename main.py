@@ -20,6 +20,9 @@ with st.container():
         query = st.text_area("My ideal holiday is..", height= 100, key= "query_text")
         button = st.button("Submit", key="button")
 
+# send the input and corpus to the similarity functions
+relevant_tour, relevant_document = return_response(jaccard_similarity, query, corpus_of_documents)
+
 # return the output to the console
 st.write('The entered text is:', query)
 
