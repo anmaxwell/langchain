@@ -1,19 +1,28 @@
 import streamlit as st
-import ollama
+from tour_details import get_tour_details
 
-def generate_response():
-    response = ollama.chat(model='llama3', stream=True, messages=st.session_state.messages)
-    for partial_resp in response:
-        token = partial_resp["message"]["content"]
-        st.session_state["full_message"] += token
-        yield token
+# read in the links of each tour
+tour_urls = []
+with open('red_tours.txt', 'r') as file:
+    # Read each line and append to the list
+    for tour in file:
+        tour_urls.append(tour.strip())
 
-st.title ("Want some help choosing a holiday?)
+# get the tour details from each link
+tours, contents, corpus_of_documents = get_tour_details(tour_urls)
+
+# set up the streamlit UI with a title and a box to enter text
+st.title("Want some help choosing a holiday?")
 st.header("Give us an idea of what you like.")
 
+# read the details typed in
 with st.container():
         query = st.text_area("My ideal holiday is..", height= 100, key= "query_text")
         button = st.button("Submit", key="button")
 
+# return the output to the console
 st.write('The entered text is:', query)
 
+#test for checking output
+for tour in tours:
+     st.write('The tour is:', tour)
