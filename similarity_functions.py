@@ -56,11 +56,13 @@ def sim_func4(query, corpus_of_documents):
         return stem_tokens(nltk.word_tokenize(text.lower().translate(remove_punctuation_map)))
     
     vectorizer = TfidfVectorizer(tokenizer=normalize, stop_words='english')
+    sims = []
+    for document in corpus_of_documents:
+        tfidf = vectorizer.fit_transform([query, document])
+        sims.append(((tfidf * tfidf.T).A)[0,1])
+    return sims
 
-    tfidf = vectorizer.fit_transform([query, corpus_of_documents])
-    return ((tfidf * tfidf.T).A)[0,1]
-
-enabled_similarity_functions:list[Callable] = [sim_func1]
+enabled_similarity_functions:list[Callable] = [sim_func1, sim_func2, sim_func3, sim_func4]
 
 def return_response(tours, corpus_of_documents, query):
     similarities = []
