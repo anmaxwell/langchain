@@ -28,4 +28,4 @@ def get_tour_details(tour_urls):
         full_details = ' '.join(item)
         corpus_of_documents.append(full_details)
     
-    return tours, contents, corpus_of_documents
+    return tours, corpus_of_documents
