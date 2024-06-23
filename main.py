@@ -5,7 +5,7 @@ from similarity_functions import return_response
 
 # read in the links of each tour
 tour_urls = []
-with open('red_tours.txt', 'r') as file:
+with open('tours.txt', 'r') as file:
     # Read each line and append to the list
     for tour in file:
         tour_urls.append(tour.strip())
@@ -22,10 +22,10 @@ with st.container():
         query = st.text_area("My ideal holiday is..", height= 100, key= "query_text")
         button = st.button("Submit", key="button")
 
-my_ouput = return_response(tours, corpus_of_documents, query)
+my_ouput = return_response(query, corpus_of_documents)
 
 # return the output to the console
-st.write('The entered text is:', corpus_of_documents)
+st.write('The entered text is:', my_ouput)
 
 
 #test for checking output

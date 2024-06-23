@@ -1,16 +1,13 @@
-import json
-import requests
-import html5lib
-import bs4
 from bs4 import BeautifulSoup
 import nltk, string
 from sklearn.feature_extraction.text import TfidfVectorizer
 from nltk.tokenize import word_tokenize, sent_tokenize
-import scipy
 import gensim
 import gensim.downloader as api
-import transformers
-import numpy
+import spacy
+spacy.load('en_core_web_sm')
+from spacy.lang.en import English
+
 from typing import Callable
 
 def sim_func1(query, corpus_of_documents):
@@ -64,10 +61,9 @@ def sim_func4(query, corpus_of_documents):
 
 enabled_similarity_functions:list[Callable] = [sim_func1, sim_func2, sim_func3, sim_func4]
 
-def return_response(tours, corpus_of_documents, query):
-    similarities = []
-    for document in corpus_of_documents:
-        similarity = sim_func1(query, document)
-        similarities.append(similarity)
-        tour_id = similarities.index(max(similarities))
-    return tour_id, corpus_of_documents[similarities.index(max(similarities))]
+def return_response(query, corpus_of_documents):
+    similarity_results = []
+    for func in enabled_similarity_functions:
+        result = func(query, corpus_of_documents)
+        similarity_results.append(result)
+    return similarity_results
