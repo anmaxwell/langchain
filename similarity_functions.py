@@ -30,7 +30,9 @@ def sim_func2(query, corpus_of_documents):
     query_doc = [w.lower() for w in word_tokenize(query)]
     query_doc_bow = dictionary.doc2bow(query_doc)
     query_doc_tf_idf = tf_idf[query_doc_bow]
-    return(sims[query_doc_tf_idf])
+    query_doc_results = sims[query_doc_tf_idf]
+    results = query_doc_results.tolist()
+    return(results)
 
 def sim_func3(query, corpus_of_documents):
     nlp = spacy.load('en_core_web_sm')
