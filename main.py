@@ -1,6 +1,7 @@
 import streamlit as st
 from tour_details import get_tour_details
 from similarity_functions import return_response
+from llama_response import get_llama_response
 
 # read in the links of each tour
 tour_urls = []
@@ -27,13 +28,17 @@ my_output = return_response(query, corpus_of_documents)
 # get a list of the recommended tours and the details
 top_recommended = []
 for output in my_output:
-     top_tour = output.index(max(output))
-     top_recommended.append(top_tour)
+     recommended = output.index(max(output))
+     top_recommended.append(recommended)
 
 top_set = set(top_recommended)
+top_tours = [tours[i] for i in top_set]
+top_documents = [corpus_of_documents[i] for i in top_set]
+test_output = get_llama_response(query, top_tours, top_documents)
+bot_response = ''.join(test_output)
 
 # return the output to the console
-st.write('The returned text is:', top_recommended)
+st.write(bot_response)
 
 #test for checking output
 for tour in tours:
